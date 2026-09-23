@@ -1,0 +1,2 @@
+PDF support note:
+This project uses pdf-parse. If your installed pdf-parse release differs, install a compatible version or replace the parser implementation in server.js.

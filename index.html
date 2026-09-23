@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EduGenie — AI Learning Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">E</span><div><b>EduGenie</b><small>AI Learning Assistant</small></div></div>
+      <nav id="nav">
+        <button class="nav-item active" data-page="home">⌂ <span>Home</span></button>
+        <button class="nav-item" data-page="subjects">▦ <span>Subjects</span></button>
+        <button class="nav-item" data-page="tutor">✦ <span>AI Tutor</span></button>
+        <button class="nav-item" data-page="notes">▤ <span>Notes</span></button>
+        <button class="nav-item" data-page="quiz">✓ <span>Quiz</span></button>
+        <button class="nav-item" data-page="flashcards">◇ <span>Flashcards</span></button>
+        <button class="nav-item" data-page="planner">◷ <span>Study Planner</span></button>
+        <button class="nav-item" data-page="pdf">↑ <span>PDF Learning</span></button>
+        <button class="nav-item" data-page="exam">⚑ <span>Exam Mode</span></button>
+      </nav>
+      <div class="sidebar-footer">Google Gemini powered<br><span>Student learning platform</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+        <div class="search"><span>⌕</span><input id="globalSearch" placeholder="Search a topic or feature..." onkeydown="if(event.key==='Enter') openTutor(this.value)"></div>
+        <div class="status"><i></i> AI Ready</div>
+      </header>
+
+      <div id="pages">
+        <section id="home" class="page active">
+          <div class="hero">
+            <div><span class="eyebrow">SMARTER STUDYING</span><h1>Learn faster with<br><em>EduGenie.</em></h1>
+            <p>Your personal AI learning assistant for explanations, notes, quizzes, flashcards, study planning, PDF learning and exam preparation.</p>
+            <button class="primary" onclick="showPage('tutor')">Ask AI Tutor <span>→</span></button></div>
+            <div class="hero-orb"><div class="orb-core">✦</div></div>
+          </div>
+          <div class="section-head"><div><h2>Everything you need to learn</h2><p>Choose a tool and start studying.</p></div></div>
+          <div class="feature-grid">
+            <div class="feature-card" onclick="showPage('tutor')"><span>✦</span><h3>AI Tutor</h3><p>Ask questions and get clear explanations.</p></div>
+            <div class="feature-card" onclick="showPage('notes')"><span>▤</span><h3>Smart Notes</h3><p>Turn topics into revision-ready notes.</p></div>
+            <div class="feature-card" onclick="showPage('quiz')"><span>✓</span><h3>Quiz</h3><p>Practice with AI-generated MCQs.</p></div>
+            <div class="feature-card" onclick="showPage('flashcards')"><span>◇</span><h3>Flashcards</h3><p>Memorize key concepts quickly.</p></div>
+            <div class="feature-card" onclick="showPage('planner')"><span>◷</span><h3>Study Planner</h3><p>Organize your study sessions.</p></div>
+            <div class="feature-card" onclick="showPage('pdf')"><span>↑</span><h3>PDF Learning</h3><p>Learn directly from your study PDFs.</p></div>
+            <div class="feature-card" onclick="showPage('exam')"><span>⚑</span><h3>Exam Mode</h3><p>Focus your revision before exams.</p></div>
+          </div>
+        </section>
+
+        <section id="subjects" class="page">
+          <div class="page-title"><span class="eyebrow">LEARNING</span><h1>Subjects</h1><p>Pick a subject and use EduGenie to learn, revise and practice.</p></div>
+          <div class="subject-grid" id="subjectGrid"></div>
+        </section>
+
+        <section id="tutor" class="page">
+          <div class="page-title"><span class="eyebrow">GEMINI AI</span><h1>AI Tutor</h1><p>Ask anything about your academic topic.</p></div>
+          <div class="panel">
+            <div class="row"><label>Subject<select id="tutorSubject"><option>General</option><option>Python</option><option>Java</option><option>DBMS</option><option>Data Structures</option><option>Computer Architecture</option></select></label></div>
+            <textarea id="tutorQ" placeholder="Example: Explain inheritance in C++ with a simple example..."></textarea>
+            <button class="primary" onclick="askTutor()">Ask EduGenie ✦</button>
+            <div id="tutorResult" class="result hidden"></div>
+          </div>
+        </section>
+
+        <section id="notes" class="page">
+          <div class="page-title"><span class="eyebrow">REVISION</span><h1>Notes Generator</h1><p>Create structured notes from any topic.</p></div>
+          <div class="panel form-grid">
+            <label>Subject<input id="notesSubject" placeholder="Python"></label>
+            <label>Topic<input id="notesTopic" placeholder="Object Oriented Programming"></label>
+            <label>Level<select id="notesLevel"><option>College</option><option>Beginner</option><option>Advanced</option></select></label>
+            <button class="primary" onclick="makeNotes()">Generate Notes</button>
+            <div id="notesResult" class="result hidden full"></div>
+          </div>
+        </section>
+
+        <section id="quiz" class="page">
+          <div class="page-title"><span class="eyebrow">PRACTICE</span><h1>Quiz</h1><p>Test your understanding with AI-generated questions.</p></div>
+          <div class="panel form-grid">
+            <label>Subject<input id="quizSubject" placeholder="Data Structures"></label>
+            <label>Topic<input id="quizTopic" placeholder="Kruskal's Algorithm"></label>
+            <label>Difficulty<select id="quizDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></label>
+            <label>Questions<select id="quizCount"><option>5</option><option>10</option><option>15</option></select></label>
+            <button class="primary" onclick="makeQuiz()">Generate Quiz</button>
+            <div id="quizResult" class="quiz-result hidden full"></div>
+          </div>
+        </section>
+
+        <section id="flashcards" class="page">
+          <div class="page-title"><span class="eyebrow">MEMORY</span><h1>Flashcards</h1><p>Generate quick question-and-answer cards.</p></div>
+          <div class="panel form-grid">
+            <label>Subject<input id="cardSubject" placeholder="DBMS"></label>
+            <label>Topic<input id="cardTopic" placeholder="Normalization"></label>
+            <button class="primary" onclick="makeCards()">Generate Flashcards</button>
+            <div id="cardsResult" class="cards-grid hidden full"></div>
+          </div>
+        </section>
+
+        <section id="planner" class="page">
+          <div class="page-title"><span class="eyebrow">ORGANIZE</span><h1>Study Planner</h1><p>Create a practical study schedule.</p></div>
+          <div class="panel form-grid">
+            <label>Subject<input id="planSubject" placeholder="Computer Architecture"></label>
+            <label>Topics<textarea id="planTopics" placeholder="Booth algorithm&#10;Cache mapping&#10;DMA"></textarea></label>
+            <label>Exam Date<input id="planDate" type="date"></label>
+            <button class="primary" onclick="makePlan()">Create Study Plan</button>
+            <div id="planResult" class="result hidden full"></div>
+          </div>
+        </section>
+
+        <section id="pdf" class="page">
+          <div class="page-title"><span class="eyebrow">YOUR MATERIAL</span><h1>PDF Learning</h1><p>Upload study material and ask EduGenie to summarize or explain it.</p></div>
+          <div class="panel upload-panel">
+            <div class="dropzone"><div class="upload-icon">↑</div><h3>Upload a PDF</h3><p>Maximum 10 MB. Text-based PDFs work best.</p><input id="pdfFile" type="file" accept="application/pdf"></div>
+            <label>What should EduGenie do?
+              <select id="pdfAction"><option value="summary">Create a summary</option><option value="explain the important concepts">Explain important concepts</option><option value="generate exam questions">Generate exam questions</option><option value="create revision notes">Create revision notes</option></select>
+            </label>
+            <button class="primary" onclick="processPDF()">Analyze PDF</button>
+            <div id="pdfResult" class="result hidden"></div>
+          </div>
+        </section>
+
+        <section id="exam" class="page">
+          <div class="page-title"><span class="eyebrow">FOCUSED PREPARATION</span><h1>Exam Mode</h1><p>Turn your syllabus into an exam-focused revision strategy.</p></div>
+          <div class="panel form-grid">
+            <label>Subject<input id="examSubject" placeholder="Data Structures"></label>
+            <label>Topics<textarea id="examTopics" placeholder="Sorting, graphs, trees, hashing"></textarea></label>
+            <label>Exam Date<input id="examDate" type="date"></label>
+            <button class="primary" onclick="makeExam()">Start Exam Preparation</button>
+            <div id="examResult" class="result hidden full"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
